@@ -1,3 +1,6 @@
+6449 => int port;
+if( me.args() > 0 ) me.arg(0) => Std.atoi => port;
+
 // Custom events for neatly storing parameters ========================================
 class OSCEvent extends Event {
     string oscArgs; // osc args are included here to make editing of subclasses easy
@@ -77,7 +80,7 @@ class OSCHandler {
     // Start OSC event listeners
     OscIn oin;
     OscMsg msg;
-    6449 => oin.port;
+    port => oin.port;
     "audiosource" => string addrPrefix;
 
     // Map of OSC addresses (string) to events (OSCEvent)

@@ -60,5 +60,5 @@ spork ~ filterLFO("/cassette/lpf");
 while( true )
 {   
     noteOn(xmit, "/cassette/playnote", 69);
-    6::second => now;
+    1::second => now;
 }
