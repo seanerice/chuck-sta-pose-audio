@@ -14,14 +14,25 @@ There are three discrete components required to achieve the goal.
     * OSC input
     * Use gesture classification and params to control piece
 2. Pose tracking software
-    * Based on https://github.com/ildoonet/tf-pose-estimation
-    * Modify code to send pose data over OSC
+    * https://github.com/tommymitch/posenetosc
+    * Sends pose data over OSC
 3. Gesture classifier
     * Use Wekinator "dynamic time warp" model, perfect for sequence classification.
     * Train several poses
     * Stream pose data for on-the-fly gesture classification.
     * Utilize second model to parameterize poses (i.e. arm is raised 75%)
     * Native OSC input/output
+   
+## Install
+1. Pull this repo.
+2. Pull the repo https://github.com/tommymitch/posenetosc
+   * Move the `osc.send(message)` on line 300 to line 300 so it is after the `}`. This ensures the message is sent correctly.
+   
+## Run
+1. Run `chuck.sh`
+2. Run `node bridge.js` in the `posenetosc` repo
+3. Run `yarn watch` in the `posenetosc` repo. This will open up a window in your browser.
+4. Load, train, and run the wekinator model.
    
 ## Audio Backend
 A composed chuck piece consisting of several audio sources.
@@ -37,7 +48,7 @@ There are two scripts in the audio engine:
 * Several distinct sections
 * OSC event listeners (gesture data, gesture parameters)
    
-## Gesture Classification
+## Gesture Classification (Failure)
 Wekinator allows me to classify multiple, complex gestures.
 
 Some gestures are:
