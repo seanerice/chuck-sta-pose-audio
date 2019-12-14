@@ -1,4 +1,4 @@
-6449 => int port;
+6669 => int port;
 if( me.args() > 0 ) me.arg(0) => Std.atoi => port;
 
 // Custom events for neatly storing parameters ========================================
@@ -13,6 +13,20 @@ class OSCEvent extends Event {
 class ParamEvent extends OSCEvent {
     fun void setParams(UGen ugen) {
         <<<"Not implemented">>>;
+    }
+}
+
+class VolumeEvent extends ParamEvent {
+    "f" => oscArgs;
+
+    float volume;
+
+    fun void fromMsg(OscMsg msg) {
+        msg.getFloat(0) => volume;
+    }
+
+    fun void setParams(UGen u) {
+        Std.clampf(volume, 0.0, 1.0) => u.gain;
     }
 }
 
@@ -138,12 +152,14 @@ class FileSource {
     DelayEvent changeDelay;
     FiltEvent changeFilter;
     PanEvent changePan;
+    VolumeEvent changeVol;
 
     // Even listener shreds
     spork ~ noteEventListener(playNote);
     spork ~ paramEventListener(changeDelay, delay);
     spork ~ paramEventListener(changeFilter, lpf);
     spork ~ paramEventListener(changePan, pan);
+    spork ~ paramEventListener(changeVol, pan);
 
     OSCHandler osch;
 
@@ -175,7 +191,7 @@ class FileSource {
         env.keyOn();
         0 => buf.pos;
         1 => buf.rate;
-        <<<prefix + ": Playing note.">>>;
+        // <<<prefix + ": Playing note.">>>;
     }
 
     fun void stop() {
@@ -184,10 +200,12 @@ class FileSource {
 
     fun void initOsc(string prefix) {
         prefix => this.prefix;
+
         osch.bindOscEvent(prefix + "/playnote", playNote);
         osch.bindOscEvent(prefix + "/delay", changeDelay);
         osch.bindOscEvent(prefix + "/lpf", changeFilter);
         osch.bindOscEvent(prefix + "/pan8", changePan);
+        osch.bindOscEvent(prefix + "/vol", changeVol);
         osch.initOSC();
     }
 }
@@ -202,8 +220,27 @@ FileSource fs2;
 fs2.initOsc("/fs2");
 
 FileSource fs3;
-"Cassette Noise/Cassette Noise 1.wav" => fs3.read;
+"CassetteNoise/Cassette Noise 1.wav" => fs3.read;
 fs3.initOsc("/cassette");
+
+FileSource timpani;
+"Timpani/timpani_b1.wav" => timpani.read;
+timpani.initOsc("/timpani");
+0.3 => timpani.delay.mix;
+1000::ms => timpani.delay.delay;
+
+FileSource choir1;
+"Choir/choir1.wav" => choir1.read;
+choir1.initOsc("/choir1");
+0.3 => choir1.delay.mix;
+1000::ms => choir1.delay.delay;
+
+FileSource choir2;
+"Choir/choir2.wav" => choir2.read;
+choir2.initOsc("/choir2");
+0.3 => choir2.delay.mix;
+1000::ms => choir2.delay.delay;
+
 
 while(true) {
     10::ms => now;

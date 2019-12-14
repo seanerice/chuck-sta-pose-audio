@@ -1,6 +1,6 @@
 # !/bin/bash
 
-HOSTNAME="localhost"
-PORT=64209
+# HOSTNAME="localhost"
+# PORT=64209
 
-chuck main.ck:$PORT test_send.ck:$HOSTNAME:$PORT
+chuck main.ck conduct.ck feature.ck
