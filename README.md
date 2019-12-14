@@ -26,13 +26,13 @@ There are three discrete components required to achieve the goal.
 ## Install
 1. Pull this repo.
 2. Pull the repo https://github.com/tommymitch/posenetosc
-   * Move the `osc.send(message)` on line 300 to line 300 so it is after the `}`. This ensures the message is sent correctly.
+   * Move the `osc.send(message)` on line 300 to line 301 so it is after the `}`. This ensures the message is sent correctly.
    
 ## Run
 1. Run `chuck.sh`
 2. Run `node bridge.js` in the `posenetosc` repo
 3. Run `yarn watch` in the `posenetosc` repo. This will open up a window in your browser.
-4. Load, train, and run the wekinator model.
+4. Load, train, and run the wekinator model in `/pose_parameters`.
    
 ## Audio Backend
 A composed chuck piece consisting of several audio sources.
